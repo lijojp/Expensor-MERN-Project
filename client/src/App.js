@@ -12,9 +12,14 @@ function App(){
     setForm({...form,[e.target.name]:e.target.value})
   }
 
-  function handlesubmit(e) {
+  async function handlesubmit(e) {
     e.preventDefault()
-    console.log(form)
+    // console.log(form)
+    const res = await fetch("http://localhost:4000/transaction",{
+      method : "POST",
+      body : form,
+    });
+    console.log(res)
   }
   return <div>
     <form onSubmit = {handlesubmit}>
