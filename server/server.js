@@ -1,13 +1,20 @@
 import express from 'express'
 import mongoose from 'mongoose';
 import cors from 'cors'
+import bodyParser from 'body-parser'
 const app = express()
 const PORT = 4000
 
 app.use(cors())
+app.use(bodyParser.json())
 
 app.get('/',(req,res)=>{
     res.send("hellow world")
+})
+
+app.post('/transaction',(req,res)=>{
+    console.log(req.body);
+    res.send({message : "form submitted"})
 })
 
 await mongoose.connect(
