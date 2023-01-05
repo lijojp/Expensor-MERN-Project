@@ -2,6 +2,7 @@ import express from 'express'
 import mongoose from 'mongoose';
 import cors from 'cors'
 import bodyParser from 'body-parser'
+import Transaction from './models/Transaction.js';
 const app = express()
 const PORT = 4000
 
@@ -12,9 +13,15 @@ app.get('/',(req,res)=>{
     res.send("hellow world")
 })
 
-app.post('/transaction',(req,res)=>{
-    console.log(req.body);
-    res.send({message : "form submitted"})
+app.post('/transaction',async (req,res)=>{
+    const { amount, description, date } = req.body
+    const transaction = new Transaction({
+        amount,
+        description,
+        date,
+    })
+    await transaction.save()
+    res.send({message : "Success"})
 })
 
 await mongoose.connect(
