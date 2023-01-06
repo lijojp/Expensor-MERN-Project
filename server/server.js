@@ -1,8 +1,9 @@
 import express from 'express'
-import mongoose from 'mongoose';
 import cors from 'cors'
 import bodyParser from 'body-parser'
-import Transaction from './models/Transaction.js';
+import TransactionsApi from './routes/TransactionsApi.js'
+import connect from './database/mongodb.js'
+
 const app = express()
 const PORT = 4000
 
@@ -13,26 +14,9 @@ app.get('/',(req,res)=>{
     res.send("hellow world")
 })
 
-app.get('/transaction',async (req,res)=>{
-    const transaction = await Transaction.find({}).sort({createdAt : -1})
-    res.json({data:transaction})
-})
+app.use('/transaction',TransactionsApi)
 
-app.post('/transaction',async (req,res)=>{
-    const { amount, description, date } = req.body
-    const transaction = new Transaction({
-        amount,
-        description,
-        date,
-    })
-    await transaction.save()
-    res.send({message : "Success"})
-})
-
-await mongoose.connect(
-    'mongodb+srv://bitfumes:bitfumes123@bitfumes-mern.mcu6ng2.mongodb.net/?retryWrites=true&w=majority'
-    )
-console.log("mongodb connected")
+await connect()
 
 
 app.listen(PORT,()=>{
