@@ -1,4 +1,7 @@
 import {useEffect, useState} from "react"
+import AppBar from "./components/AppBar";
+import TransactionForm from "./components/TransactionForm"
+// import { AppBar } from "@mui/material";
 
 const InitialForm = {
     amount: 0,
@@ -46,6 +49,8 @@ console.log(transaction)
   }
  
   return <div>
+    <AppBar/>
+    <TransactionForm/>
     <form onSubmit = {handlesubmit}>
       <input type="number" name="amount" value={form.amount} onChange={handleInput} placeholder="Enter transaction amount"/>
       <input type="text" name="description" value={form.description} onChange={handleInput} placeholder="Enter transaction details"/>
