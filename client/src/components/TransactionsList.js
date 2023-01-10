@@ -7,12 +7,24 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Typography } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import IconButton from '@mui/material/IconButton';
 
-function createData(name,calories,fat,carbs,protein) {
-  return { name, calories, fat, carbs, protein };
-}
 
-export default function TransactionsList({ transactions }) {
+export default function TransactionsList({ transactions, fetchTransaction }) {
+
+  async function remove(_id) {
+    if(!window.confirm("are you sure"))return
+    const res = await fetch(`http://localhost:4000/transaction/${_id}`,{
+      method : "DELETE",
+    })
+    if(res.ok){
+      fetchTransaction()
+      window.alert("Deleted")
+    }
+  }
+
   return (
     <>
     <Typography sx={{marginTop:10}} variant="h6">List Of Transaction</Typography>
@@ -29,13 +41,21 @@ export default function TransactionsList({ transactions }) {
         <TableBody>
           {transactions.map((row) => (
             <TableRow
-              key={row.name}
+              key={row._id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
             >
               <TableCell align="center">{row.amount}</TableCell>              
               <TableCell align="center">{row.description}</TableCell>
               <TableCell align="center">{row.date}</TableCell>
-              <TableCell align="center"><p>edit</p><p>delete</p></TableCell>
+              <TableCell align="center">
+                 <IconButton color="primary" component="label">
+                   <EditIcon/>
+                  </IconButton>
+                  <IconButton color="primary" component="label" onClick={()=>remove(row._id)}>
+                  <DeleteIcon/>
+                  </IconButton>
+                
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
