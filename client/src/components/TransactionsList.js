@@ -10,6 +10,7 @@ import { Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
+import dayjs from 'dayjs';
 
 
 export default function TransactionsList({ transactions, fetchTransaction }) {
@@ -23,6 +24,10 @@ export default function TransactionsList({ transactions, fetchTransaction }) {
       fetchTransaction()
       window.alert("Deleted")
     }
+  }
+
+  function formatDate(date) {
+    return dayjs(date).format('DD MMM, YYYY')
   }
 
   return (
@@ -46,14 +51,14 @@ export default function TransactionsList({ transactions, fetchTransaction }) {
             >
               <TableCell align="center">{row.amount}</TableCell>              
               <TableCell align="center">{row.description}</TableCell>
-              <TableCell align="center">{row.date}</TableCell>
+              <TableCell align="center">{formatDate(row.date)}</TableCell>
               <TableCell align="center">
                  <IconButton color="primary" component="label">
                    <EditIcon/>
                   </IconButton>
                   <IconButton color="primary" component="label" onClick={()=>remove(row._id)}>
                   <DeleteIcon/>
-                  </IconButton>
+                 </IconButton>
                 
               </TableCell>
             </TableRow>
