@@ -22,7 +22,13 @@ router.post('/',async (req,res)=>{
 router.delete('/:id',async (req,res)=>{
     await Transaction.deleteOne({ _id:req.params.id })
     res.json({ message: "success" })
-    // console.log(typeof (req.params.id))
+    // console.log((req.params.id))
+})
+router.patch('/:id',async (req,res)=>{
+    await Transaction.updateOne({ _id:req.params.id },{$set: req.body})
+    res.json({ message: "updated" })
+    // console.log(req.body);
+
 })
 
 export default router;

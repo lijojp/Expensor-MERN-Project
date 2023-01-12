@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 // import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 // import CardActions from '@mui/material/CardActions';
@@ -10,14 +10,22 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import dayjs, { Dayjs } from 'dayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
+import { create } from '@mui/material/styles/createTransitions';
 
 const InitialForm = {
     amount: 0,
     description: " ",
     date: new Date()
 }
-export default function TransactionForm({ fetchTransaction }) {
+export default function TransactionForm({ fetchTransaction, editTransaction }) {
   const [form ,setForm] = useState({ InitialForm })
+
+  useEffect(()=>{
+    if(editTransaction.amount !== undefined){
+      setForm(editTransaction)
+      // console.log("hiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
+    }
+  },[editTransaction])
 
   function handleChange(e) {
     setForm({...form,[e.target.name]:e.target.value})
@@ -29,6 +37,17 @@ export default function TransactionForm({ fetchTransaction }) {
  
   async function handlesubmit(e) {
     e.preventDefault()
+    const res = editTransaction.amount === undefined ? create(): update()
+  }
+
+  function reload(res) {
+    if(res.ok){
+      setForm(InitialForm)
+      fetchTransaction()
+    }
+  }
+  
+  async function create() {
     const res = await fetch("http://localhost:4000/transaction",{
       method : "POST",
       body : JSON.stringify(form),
@@ -36,11 +55,17 @@ export default function TransactionForm({ fetchTransaction }) {
         "content-type": "application/json",
       },
     });
-
-    if(res.ok){
-      setForm(InitialForm)
-      fetchTransaction()
-    }
+    reload(res);
+  }
+  async function update() {
+    const res = await fetch(`http://localhost:4000/transaction/${editTransaction._id}`,{
+      method : "PATCH",
+      body : JSON.stringify(form),
+      headers:{
+        "content-type": "application/json",
+      },
+    });
+    reload(res)
   }
 
   return (
@@ -83,7 +108,12 @@ export default function TransactionForm({ fetchTransaction }) {
             {...params} />}
         />    
       </LocalizationProvider>
-      <Button type='submit' variant="contained">Submit</Button>
+      {editTransaction.amount !== undefined && (
+      <Button type='submit' variant="secondary">Update</Button>)}
+      
+      {editTransaction.amount === undefined && (
+      <Button type='submit' variant="contained">Submit</Button>)}
+        
         </form>
       </CardContent>
     </Card>

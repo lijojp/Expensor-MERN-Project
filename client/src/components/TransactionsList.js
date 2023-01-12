@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import dayjs from 'dayjs';
 
 
-export default function TransactionsList({ transactions, fetchTransaction }) {
+export default function TransactionsList({ transactions, fetchTransaction, setEditTransaction }) {
 
   async function remove(_id) {
     if(!window.confirm("are you sure"))return
@@ -53,7 +53,7 @@ export default function TransactionsList({ transactions, fetchTransaction }) {
               <TableCell align="center">{row.description}</TableCell>
               <TableCell align="center">{formatDate(row.date)}</TableCell>
               <TableCell align="center">
-                 <IconButton color="primary" component="label">
+                 <IconButton color="primary" component="label" onClick={()=>setEditTransaction(row)}>
                    <EditIcon/>
                   </IconButton>
                   <IconButton color="primary" component="label" onClick={()=>remove(row._id)}>
