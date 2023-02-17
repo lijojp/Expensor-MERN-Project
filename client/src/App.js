@@ -1,18 +1,46 @@
+import React from "react";
 import AppBar from "./components/AppBar";
 import { Outlet } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getUser } from "./store/auth.js"
+import Cookies from 'js-cookie';
+
 
 function App(){
+  const [isLoading, setIsLoading] = useState(true)
   
-  const auth = useSelector((state) => state.auth)
+  const token = Cookies.get("token")
   const dispatch = useDispatch()
 
+  async function fetchUser() {
+    setIsLoading(true)
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/user`,{
+        headers:{
+            Authorization: `Bearer ${token}`
+        }
+    })
+    // console.log(res)
+
+    if (res.ok){
+      const user = await res.json()
+      console.log(3)
+      dispatch(getUser(user))
+      
+    }
+
+    setIsLoading(false)
+
+}
+
   useEffect(()=>{
-    dispatch(getUser())
+    fetchUser()
   },[])
-  console.log(auth);
+
+  if(isLoading){
+        return <p>Loading...</p>
+    }
+
   return <div>
     <AppBar/>
     <Outlet />

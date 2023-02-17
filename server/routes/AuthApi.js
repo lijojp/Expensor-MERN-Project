@@ -29,6 +29,7 @@ router.post('/login', async(req,res)=>{
     const {email ,password} = req.body
 
     const userExists = await User.findOne({email})
+    
     if(! userExists){
         res.status(406).json({"message":"credentials not found"})
         return
@@ -45,9 +46,9 @@ router.post('/login', async(req,res)=>{
         userName : email,
         _id : userExists._id
     }
+    let a=10
     const token = jwt.sign({payload}, process.env.JWT_SECRET);
-    res.status(200).json({"message":"succesfully logged in",token})
-       
+    res.status(200).json({"message":"succesfully logged in", token, userExists})
 })
 
 export default router;
