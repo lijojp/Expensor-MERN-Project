@@ -10,7 +10,7 @@ export const authSlice = createSlice({
     getUser: (state, { payload }) => {
       // console.log(2);
       // console.log(payload.user);
-      state.user = (payload.user)
+      state.user = (payload?.user)
       state.isAuthenticated = true
     },
     logout: (state)=>{
