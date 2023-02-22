@@ -11,6 +11,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 // import dayjs, { Dayjs } from 'dayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { create } from '@mui/material/styles/createTransitions';
+import Cookies from 'js-cookie';
 
 const InitialForm = {
     amount: 0,
@@ -18,6 +19,7 @@ const InitialForm = {
     date: new Date()
 }
 export default function TransactionForm({ fetchTransaction, editTransaction }) {
+  const token = Cookies.get('token')
   const [form ,setForm] = useState({ InitialForm })
 
   useEffect(()=>{
@@ -53,6 +55,7 @@ export default function TransactionForm({ fetchTransaction, editTransaction }) {
       body : JSON.stringify(form),
       headers:{
         "content-type": "application/json",
+        'Authorization' : `Bearer ${token}`,
       },
     });
     reload(res);
@@ -63,6 +66,7 @@ export default function TransactionForm({ fetchTransaction, editTransaction }) {
       body : JSON.stringify(form),
       headers:{
         "content-type": "application/json",
+        'Authorization' : `Bearer ${token}`,
       },
     });
     reload(res)

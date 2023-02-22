@@ -7,13 +7,14 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Cookies from 'js-cookie';
 import { logout } from "../store/auth.js"
 
 export default function ButtonAppBar() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const isAuthenticated = useSelector(state => state.auth.isAuthenticated)
 
   function _logout(){
     Cookies.remove("token")
@@ -32,15 +33,26 @@ export default function ButtonAppBar() {
           </Link>
           </Typography>
 
+          {
+            isAuthenticated &&
             <Button color="inherit" onClick={_logout}>Logout</Button>         
+          }
 
-          <Link to={'/login'} className="text-white">
-            <Button color="inherit">Login</Button>         
-          </Link>
+          {
+            ! isAuthenticated && (
+          <>
+            <Link to={'/login'} className="text-white">
+             <Button color="inherit">Login</Button>         
+            </Link>
           
-          <Link to={'/register'} className="text-white">
-            <Button color="inherit">Register</Button>         
-          </Link>
+            <Link to={'/register'} className="text-white">
+             <Button color="inherit">Register</Button>         
+            </Link>
+          </>
+          )}
+
+
+          
 
         </Toolbar>
       </AppBar>

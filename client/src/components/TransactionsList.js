@@ -11,14 +11,20 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import dayjs from 'dayjs';
+import Cookies from 'js-cookie';
 
 
 export default function TransactionsList({ transactions, fetchTransaction, setEditTransaction }) {
 
   async function remove(_id) {
+    const token = Cookies.get('token')
+
     if(!window.confirm("are you sure"))return
     const res = await fetch(`${process.env.REACT_APP_API_URL}/transaction/${_id}`,{
       method : "DELETE",
+      headers : {
+        'Authorization' : `Bearer ${token}`,
+      }
     })
     if(res.ok){
       fetchTransaction()
