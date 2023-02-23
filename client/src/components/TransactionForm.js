@@ -12,16 +12,24 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import { create } from '@mui/material/styles/createTransitions';
 import Cookies from 'js-cookie';
+import Autocomplete from '@mui/material/Autocomplete'
+// import { Box } from '@mui/system';
+import  Box  from '@mui/material/Box';
+import {useSelector} from 'react-redux'
 
 const InitialForm = {
-    amount: 0,
+    amount: " ",
     description: " ",
-    date: new Date()
+    date: new Date(),
+    category_id: ""
 }
 export default function TransactionForm({ fetchTransaction, editTransaction }) {
+  const {categories} = useSelector((state) => state.auth.user)
+  // console.log(useSelector(state => state.auth.user));
+  console.log(categories);
   const token = Cookies.get('token')
   const [form ,setForm] = useState({ InitialForm })
-
+    
   useEffect(()=>{
     if(editTransaction.amount !== undefined){
       setForm(editTransaction)
@@ -71,6 +79,11 @@ export default function TransactionForm({ fetchTransaction, editTransaction }) {
     });
     reload(res)
   }
+  function getCategoryNameById() {
+    return (
+      categories.find((category) => category._id ===form.category_id) ?? ""
+    )
+  }
 
   return (
     <Card sx={{ minWidth: 275, marginTop:10 }}>
@@ -78,7 +91,7 @@ export default function TransactionForm({ fetchTransaction, editTransaction }) {
         <Typography variant="h6">
           Add New Transaction
         </Typography>
-        <form onSubmit={handlesubmit}>
+        <Box component="form" onSubmit={handlesubmit} sx={{display: 'flex'}}>
         <TextField 
            sx={{marginRight:5}}
            id="outlined-basic" 
@@ -112,13 +125,26 @@ export default function TransactionForm({ fetchTransaction, editTransaction }) {
             {...params} />}
         />    
       </LocalizationProvider>
+
+      <Autocomplete
+        value={getCategoryNameById()}
+        onChange={(event, newValue) => {
+          setForm({...form, category_id: newValue._id});
+        }}
+        id="controllable-states-demo"
+        options={categories}
+        sx={{ width: 200, marginRight:5 }}
+        renderInput={(params) => <TextField {...params}
+        size='small' label="Category" />}
+      />
+
       {editTransaction.amount !== undefined && (
       <Button type='submit' variant="secondary">Update</Button>)}
       
       {editTransaction.amount === undefined && (
       <Button type='submit' variant="contained">Submit</Button>)}
         
-        </form>
+        </Box>
       </CardContent>
     </Card>
   );

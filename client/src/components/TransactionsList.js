@@ -45,6 +45,7 @@ export default function TransactionsList({ transactions, fetchTransaction, setEd
           <TableRow>
             <TableCell align="center">Amount</TableCell>
             <TableCell align="center">Description</TableCell>
+            <TableCell align="center">Category</TableCell>
             <TableCell align="center">Date</TableCell>
             <TableCell align="center">Date</TableCell>
           </TableRow>
@@ -57,6 +58,7 @@ export default function TransactionsList({ transactions, fetchTransaction, setEd
             >
               <TableCell align="center">{row.amount}</TableCell>              
               <TableCell align="center">{row.description}</TableCell>
+              <TableCell align="center">{row.category_id}</TableCell>
               <TableCell align="center">{formatDate(row.date)}</TableCell>
               <TableCell align="center">
                  <IconButton color="primary" component="label" onClick={()=>setEditTransaction(row)}>

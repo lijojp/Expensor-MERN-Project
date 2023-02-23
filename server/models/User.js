@@ -5,7 +5,8 @@ const UserSchema = new Schema({
     FirstName: {type: String, required:['first name field required']},
     LastName: { type: String, required:['last name field required']},
     email: { type: String, required:['email required'] },
-    password: { type: String, required:['password required'] }
+    password: { type: String, required:['password required'] },
+    categories: [{ label: String, icon: String}]
 },
 {timestamps: true}
 )
