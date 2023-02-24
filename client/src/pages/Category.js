@@ -13,18 +13,37 @@ import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import dayjs from "dayjs";
 import Cookies from "js-cookie";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../store/auth";
 
 export default function Category() {
+  const token = Cookies.get("token")
   const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch()
 
-  function categoryName(id) {
-    const category = user.categories.find((category) => category._id === id);
-    return category ? category.label : "NA";
-  }
+  // function categoryName(id) {
+  //   const category = user.categories.find((category) => category._id === id);
+  //   return category ? category.label : "NA";
+  // }
 
-  function formatDate(date) {
-    return dayjs(date).format("DD MMM, YYYY");
+  // function formatDate(date) {
+  //   return dayjs(date).format("DD MMM, YYYY");
+  // }
+
+  async function remove(id){
+
+    const res = await fetch(`${process.env.REACT_APP_API_URL}/category/${id}`,{
+      method : "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+    if(res.ok){
+      const _user = {
+        ...user, categories: user.categories.filter((cat)=> cat._id !== id)
+      }
+      dispatch(setUser({ user: _user }))
+    }
   }
 
   return (
@@ -61,7 +80,7 @@ export default function Category() {
                   <IconButton
                     color="primary"
                     component="label"
-                    // onClick={() => remove(row._id)}
+                    onClick={() => remove(row._id)}
                   >
                     <DeleteIcon />
                   </IconButton>

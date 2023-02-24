@@ -15,7 +15,7 @@ import Container from '@mui/material/Container';
 import Cookies from 'js-cookie'
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { getUser } from '../store/auth';
+import { setUser } from '../store/auth';
 // import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 export default function SignIn() {
@@ -40,7 +40,7 @@ export default function SignIn() {
     const { token, user } = await res.json()
     if(res.ok){
       Cookies.set('token', token )
-      dispatch(getUser(user))
+      dispatch(setUser(user))
       navigate('/home')
     }
   };
