@@ -33,6 +33,10 @@ export default function ButtonAppBar() {
           </Link>
           </Typography>
 
+          <Link to={'/category'} className="text-white">
+             <Button color="inherit">Categories</Button>         
+          </Link>
+
           {
             isAuthenticated &&
             <Button color="inherit" onClick={_logout}>Logout</Button>         
@@ -50,9 +54,6 @@ export default function ButtonAppBar() {
             </Link>
           </>
           )}
-
-
-          
 
         </Toolbar>
       </AppBar>

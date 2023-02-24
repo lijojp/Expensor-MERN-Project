@@ -26,7 +26,7 @@ const InitialForm = {
 export default function TransactionForm({ fetchTransaction, editTransaction }) {
   const {categories} = useSelector((state) => state.auth.user)
   // console.log(useSelector(state => state.auth.user));
-  console.log(categories);
+  // console.log(categories);
   const token = Cookies.get('token')
   const [form ,setForm] = useState({ InitialForm })
     

@@ -12,9 +12,18 @@ import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import dayjs from 'dayjs';
 import Cookies from 'js-cookie';
+import { useSelector } from 'react-redux';
 
 
 export default function TransactionsList({ transactions, fetchTransaction, setEditTransaction }) {
+  const user = useSelector((state)=>state.auth.user)
+  // console.log(user);
+  function categoryName(id){
+    // console.log(id);
+    const category = user.categories.find((category)=>category._id === id)
+    // console.log(category);
+    return category ? category.label : "NA"
+  }
 
   async function remove(_id) {
     const token = Cookies.get('token')
@@ -58,7 +67,7 @@ export default function TransactionsList({ transactions, fetchTransaction, setEd
             >
               <TableCell align="center">{row.amount}</TableCell>              
               <TableCell align="center">{row.description}</TableCell>
-              <TableCell align="center">{row.category_id}</TableCell>
+              <TableCell align="center">{categoryName(row.category_id)}</TableCell>
               <TableCell align="center">{formatDate(row.date)}</TableCell>
               <TableCell align="center">
                  <IconButton color="primary" component="label" onClick={()=>setEditTransaction(row)}>
