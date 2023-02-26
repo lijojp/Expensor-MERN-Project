@@ -15,20 +15,18 @@ import dayjs from "dayjs";
 import Cookies from "js-cookie";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../store/auth";
+import CategoryForm from "../components/CategoryForm"
+import { useState } from "react";
 
-export default function Category() {
+export default function Category(){
   const token = Cookies.get("token")
   const user = useSelector((state) => state.auth.user);
   const dispatch = useDispatch()
-
-  // function categoryName(id) {
-  //   const category = user.categories.find((category) => category._id === id);
-  //   return category ? category.label : "NA";
-  // }
-
-  // function formatDate(date) {
-  //   return dayjs(date).format("DD MMM, YYYY");
-  // }
+  const [ editCategory, setEditCategory ] = useState({})
+// console.log(user);
+  function setEdit(category){
+    setEditCategory(category)
+  }
 
   async function remove(id){
 
@@ -42,12 +40,14 @@ export default function Category() {
       const _user = {
         ...user, categories: user.categories.filter((cat)=> cat._id !== id)
       }
+      console.log(_user);
       dispatch(setUser({ user: _user }))
     }
   }
 
   return (
     <>
+    <CategoryForm editCategory={ editCategory } />
       <Typography sx={{ marginTop: 10 }} variant="h6">
         List Of Category
       </Typography>
@@ -73,7 +73,7 @@ export default function Category() {
                   <IconButton
                     color="primary"
                     component="label"
-                    // onClick={() => setEditTransaction(row)}
+                    onClick={() => setEdit(row)}
                   >
                     <EditIcon />
                   </IconButton>
