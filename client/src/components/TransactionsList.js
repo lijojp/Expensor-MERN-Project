@@ -15,9 +15,9 @@ import Cookies from 'js-cookie';
 import { useSelector } from 'react-redux';
 
 
-export default function TransactionsList({ transactions, fetchTransaction, setEditTransaction }) {
+export default function TransactionsList({ data, fetchTransaction, setEditTransaction }) {
   const user = useSelector((state)=>state.auth.user)
-  // console.log(user);
+  // console.log((user.categories));
   function categoryName(id){
     // console.log(id);
     const category = user.categories.find((category)=>category._id === id)
@@ -44,7 +44,7 @@ export default function TransactionsList({ transactions, fetchTransaction, setEd
   function formatDate(date) {
     return dayjs(date).format('DD MMM, YYYY')
   }
-
+  console.log(data);
   return (
     <>
     <Typography sx={{marginTop:10}} variant="h6">List Of Transaction</Typography>
@@ -60,26 +60,32 @@ export default function TransactionsList({ transactions, fetchTransaction, setEd
           </TableRow>
         </TableHead>
         <TableBody>
-          {transactions.map((row) => (
-            <TableRow
-              key={row._id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell align="center">{row.amount}</TableCell>              
-              <TableCell align="center">{row.description}</TableCell>
-              <TableCell align="center">{categoryName(row.category_id)}</TableCell>
-              <TableCell align="center">{formatDate(row.date)}</TableCell>
-              <TableCell align="center">
-                 <IconButton color="primary" component="label" onClick={()=>setEditTransaction(row)}>
-                   <EditIcon/>
-                  </IconButton>
-                  <IconButton color="primary" component="label" onClick={()=>remove(row._id)}>
-                  <DeleteIcon/>
-                 </IconButton>
-                
-              </TableCell>
-            </TableRow>
-          ))}
+          {
+            data.map((month) => (
+              month.transactions
+              .map((row) => (
+                <TableRow
+                  key={row._id}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell align="center">{row.amount}</TableCell>              
+                  <TableCell align="center">{row.description}</TableCell>
+                  <TableCell align="center">{categoryName(row.category_id)}</TableCell>
+                  <TableCell align="center">{formatDate(row.date)}</TableCell>
+                  <TableCell align="center">
+                     <IconButton color="primary" component="label" onClick={()=>setEditTransaction(row)}>
+                       <EditIcon/>
+                      </IconButton>
+                      <IconButton color="primary" component="label" onClick={()=>remove(row._id)}>
+                      <DeleteIcon/>
+                     </IconButton>
+                    
+                  </TableCell>
+                </TableRow>
+              ))
+            ))
+          }
+          
         </TableBody>
       </Table>
     </TableContainer>

@@ -4,6 +4,7 @@ import TransactionForm from "../components/TransactionForm"
 import TransactionsList from "../components/TransactionsList"
 import Container from '@mui/material/Container';
 import Cookies from 'js-cookie'
+import TransactionChart from "../components/TransactionChart"
 
 export default function Home() {
 
@@ -27,12 +28,14 @@ export default function Home() {
     return(
      
         <Container>
+          <TransactionChart data={transactions}/>
+          
         <TransactionForm 
           fetchTransaction={fetchTransaction}
           editTransaction={editTransaction}
           />
         <TransactionsList 
-          transactions={transactions}
+          data={transactions}
           fetchTransaction={fetchTransaction}
           setEditTransaction={setEditTransaction}
           />
