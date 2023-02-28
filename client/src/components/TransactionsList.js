@@ -44,7 +44,7 @@ export default function TransactionsList({ data, fetchTransaction, setEditTransa
   function formatDate(date) {
     return dayjs(date).format('DD MMM, YYYY')
   }
-  console.log(data);
+  // console.log(data);
   return (
     <>
     <Typography sx={{marginTop:10}} variant="h6">List Of Transaction</Typography>

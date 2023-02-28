@@ -41,8 +41,8 @@ export const register = async (req,res)=>{
 
 export const login = async(req,res)=>{
     const {email ,password} = req.body
-
     const userExists = await User.findOne({email})
+    // console.log("Authcontroller",userExists);
     
     if(! userExists){
         res.status(406).json({"message":"credentials not found"})

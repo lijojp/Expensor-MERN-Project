@@ -21,8 +21,10 @@ export default (passport)=>{
                 return done(err, false);
             }
             if (user) {
+                // console.log("passport",user);
                 return done(null, user);
             } else {
+                // console.log("passport error");
                 return done(null, false);
                 // or you could create a new account
             }

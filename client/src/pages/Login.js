@@ -37,7 +37,8 @@ export default function SignIn() {
       }
     })
     // const { token, user } = await res.json()
-    const { token, user } = await res.json()
+    const { token,user, userExists } = await res.json()
+    // const user = userExists
     if(res.ok){
       Cookies.set('token', token )
       dispatch(setUser(user))

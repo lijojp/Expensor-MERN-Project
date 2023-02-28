@@ -16,7 +16,7 @@ export default function TransactionChart({data}) {
         item.month = dayjs().month(item._id-1).format("MMMM")
         return item
     })
-console.log(data);
+// console.log(data);
     return (
         
         <Paper sx={{marginTop:5}}>
